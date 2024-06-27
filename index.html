@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page | Huseyin</title>
+  <style>
+  /* ------------------ Reset ------------------*/
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0;}
+  body { line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  img, picture, video, canvas, svg { display: block; max-width: 100%; }
+  input, button, textarea, select { font: inherit; }
+  p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+  #root, #__next { isolation: isolate; }
+  /* ------------------------------------------ */
+  body {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    font-family: monospace;
+    font-weight: 200;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+  #clock {
+    font-size: 5rem;
+    line-height: 5rem;
+  }
+  #calendar {
+    font-size: 1.2rem;
+  }
+  #second {
+    background-color: #333; width: 240px; height: 1px;
+  }
+  #second > div {
+    height: 100%; background-color: #666;
+  }
+  #search {
+    padding: 0.6rem 1rem;
+    border: 1px solid #333;
+    border-radius: 10px;
+    background-color: #111;
+    width: 320px;
+    outline-color: #333;
+    color: #fff;
+    outline-offset: 0px;
+    letter-spacing: 1px;
+  }
+  input:focus{
+    outline: none;
+  }
+  </style>
+</head>
+<body>
+  <div>
+    <div id="clock"></div>
+    <div id="second">
+      <div id="second-bar" style="width: 10%;"></div>
+    </div>
+  </div>
+  <div id="calendar"></div>
+  <div>
+    <input type="search" id="search" tabindex="1" autofocus placeholder="type to search"/>
+  </div>
+</body>
+
+<script>
+const clockElement = document.getElementById('clock')
+const secondBarElement = document.getElementById('second-bar')
+function updateClock() {
+  const now = new Date()
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  const seconds = String(now.getSeconds()).padStart(2, '0')
+  
+  const timeString = `${hours}•${minutes}`
+  
+  clockElement.textContent = timeString
+  let percentage = (now.getSeconds() / 60) * 100
+  secondBarElement.style.width = `${percentage.toFixed(2)}%`
+}
+function showDate() {
+    const currentDate = new Date()
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+    }
+    const dateString = currentDate.toLocaleDateString(undefined, options)
+    document.getElementById('calendar').textContent = dateString
+}
+
+setInterval(updateClock, 1000)
+updateClock()
+showDate()
+
+</script>
+</html>
