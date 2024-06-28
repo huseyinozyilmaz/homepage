@@ -25,6 +25,7 @@
     gap: 1rem;
     align-items: center;
     justify-content: center;
+    padding-top: 10%;
   }
   #clock {
     font-size: 5rem;
@@ -42,7 +43,7 @@
   #search {
     padding: 0.6rem 1rem;
     border: 1px solid #333;
-    border-radius: 10px;
+    border-radius: 4px;
     background-color: #111;
     width: 320px;
     outline-color: #333;
@@ -64,13 +65,23 @@
   </div>
   <div id="calendar"></div>
   <div>
-    <input type="search" id="search" tabindex="1" autofocus placeholder="type to search"/>
+    <input type="search" id="search" tabindex="1" autofocus placeholder="type to search" onkeypress="onSearch()"/>
   </div>
 </body>
 
 <script>
 const clockElement = document.getElementById('clock')
 const secondBarElement = document.getElementById('second-bar')
+const searchElement = document.getElementById('search')
+const searchProvider = 'https://duckduckgo.com/?q='
+const weatherProvider = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m"
+const weatherLocations = {
+  "London": { latitude: 52.52, longitude: 13.41 },
+  "Chester": { latitude: 52.52, longitude: 13.41 },
+}
+const tickers = {
+
+}
 function updateClock() {
   const now = new Date()
   const hours = String(now.getHours()).padStart(2, '0')
@@ -84,16 +95,23 @@ function updateClock() {
   secondBarElement.style.width = `${percentage.toFixed(2)}%`
 }
 function showDate() {
-    const currentDate = new Date()
-    const options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long'
-    }
-    const dateString = currentDate.toLocaleDateString(undefined, options)
-    document.getElementById('calendar').textContent = dateString
+  const currentDate = new Date()
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long'
+  }
+  const dateString = currentDate.toLocaleDateString(undefined, options)
+  document.getElementById('calendar').textContent = dateString
 }
+function onSearch() {
+  if (event.key !== "Enter" || searchElement.value.length < 1) {
+    return
+  }
+  window.location.href = `${searchProvider}${searchElement.value}`
+}
+
 
 setInterval(updateClock, 1000)
 updateClock()
